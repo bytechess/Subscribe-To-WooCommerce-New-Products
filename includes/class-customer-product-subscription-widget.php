@@ -81,6 +81,7 @@
 				echo '	<label>Email Address</label>';
 				echo '	<input type="hidden" name="form_sent" />';
 				echo '	<p><input type="email" class="subscription-email" name="subscripton_email" /></p>';
+				echo '	<p style="' . ((is_rtl()) ? 'right' : 'left') . ': -999em; position:absolute;"><input type="email" name="email_2" tabindex="-1" autocomplete="off" /></p>'; // Spam trap
 				echo '	<p><input type="submit" name="subscription" value="Sign Up" /></p>';
 				echo '</form>';
         
@@ -105,24 +106,34 @@
 
         if(wp_verify_nonce($_REQUEST['_wpnonce'])) // Verify the nonce
         {
-          if($unique_email)
+          if(isset($_POST['email_2']))
           {
-            if(is_email($new_email)) // Check email is inputted
+            if(!($_POST['email_2'])) // Check spam hasnt been filled in
             {
-              $email_subscribers[] = $new_email;
+              if($unique_email)
+              {
+                if(is_email($new_email)) // Check email is inputted
+                {
+                  $email_subscribers[] = $new_email;
 
-              update_option('stnwp_subscribers', $email_subscribers);
+                  update_option('stnwp_subscribers', $email_subscribers);
 
-              echo '<p class="success">You have signed up! We will notify you when new products are added.</p>';
+                  echo '<p class="success">You have signed up! We will notify you when new products are added.</p>';
+                }
+                else
+                {
+                  echo '<p class="error">Please input a valid email address.</p>';
+                }
+              }
+              else
+              {
+                echo '<p class="error">This email is already signed up to the list.</p>';
+              }
             }
             else
             {
-              echo '<p class="error">Please input a valid email address.</p>';
+              echo '<p class="error">Spam detected. If this is a mistake, please turn off your browser form autofiller.</p>';
             }
-          }
-          else
-          {
-            echo '<p class="error">This email is already signed up to the list.</p>';
           }
         }
 			}
