@@ -4,14 +4,14 @@ Contributors: Lewis Self
 Donate Link: https://selfdesigns.co.uk
 Tags: woocommerce, new, products, notification, subscription, subscribe, newsletter, email
 Requires at least: 4.0
-Tested up to: 4.2.1
+Tested up to: 4.7.4
 Stable tag: Trunk
 License: GPLv2
-Version: 1.0.0
+Version: 1.0.1
 
 == Description ==
 
-This plugin creates a sidebar widget to let customers sign up to be notified when new products are added to the website. It also creates a admin dashboard widget to let you add and delete customers to and from the list. For this plugin to function correctly, WooCommerce must be installed.
+This plugin creates a sidebar widget to let customers sign up to be notified when new products are added to the website. All the email settings are customisable, you can change the subject, heading and the type of email from plain to html. It also creates a admin dashboard widget to let you add and delete customers to and from the list. For this plugin to function correctly, WooCommerce must be installed.
 
 == Installation ==
 
@@ -34,6 +34,10 @@ You can add and remove people to and from the email list by using the admin widg
 
 Not currently but we are looking to implement this feature in the future.
 
+= Will I need a spam filter to stop spam emails signing up to my list? =
+
+We have added a feature that helps detect spam and prevent it from signing up to your email list.
+
 = Can I create my own email template for this plugin? =
 
 Yes. You can create your custom email template the same way you would create a WooCommerce default template. Go to woocommerce->settings. Click on the "Emails" tab. You should see a table which has all of the WooCommerce emails listed. Click on the "Product Subscription Email", click "copy file to theme" and you can modify it in your theme folder.
@@ -48,6 +52,10 @@ Yes. You can create your custom email template the same way you would create a W
 == Upgrade Notice ==
 
 == Changelog ==
+
+= 1.0.1 (03/05/2017) =
+* Fixed admin widget dashboard bug
+* Added spam on subscription form
 
 = 1.0.0 (30/04/2017) =
 * Initial release

@@ -3,7 +3,7 @@
 	/*
 		Plugin Name: Subscribe To New WooCommerce Products
 		Description: Lets customers input an email address to be notified when new products are uploaded to the website.
-		Version:     1.0.0
+		Version:     1.0.1
 		Author:      Lewis Self
 		Author URI:  http://selfdesigns.co.uk
 	*/
@@ -63,10 +63,7 @@
 
                 foreach(explode("\n", $_POST['product_subscription_emails']) as $product_subscription_email) // Loop and sanatize all email addresses in array
                 {
-                  if(is_email($product_subscription_email)) // Check data inputted by admin is an email address
-                  {
-                    $sanatized_emails[] = sanitize_email($product_subscription_email);
-                  }
+                  $sanatized_emails[] = sanitize_email($product_subscription_email);
                 }
                 update_option('stnwp_subscribers', $sanatized_emails);
               }
