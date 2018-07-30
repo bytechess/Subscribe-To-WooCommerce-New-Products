@@ -3,7 +3,7 @@
 	/*
 		Plugin Name: Subscribe To New WooCommerce Products
 		Description: Lets customers input an email address to be notified when new products are uploaded to the website.
-		Version:     1.0.1
+		Version:     1.1.0
 		Author:      Lewis Self
 		Author URI:  http://selfdesigns.co.uk
 	*/
@@ -35,66 +35,66 @@
 				return array_merge($links, $stnwp_settings_link);
 			}
 			add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'stnwp_add_setting_link');
-      
-      function stnwp_create_admin_widget() // Create admin widget
-      {
-        if(current_user_can('administrator'))
-        {
-          wp_add_dashboard_widget(
-            'subscribe_to_new_woocommerce_products',
-            'New Product Subscribers',
-            'stnwp_create_admin_widget_html'
-          );
-        }
-      }
-      add_action('wp_dashboard_setup', 'stnwp_create_admin_widget');
-        
-      function stnwp_create_admin_widget_html() // Admin widget HTML
-      {
-        if(current_user_can('administrator'))
-        {
-          if(isset($_REQUEST['_wpnonce']))
-          {
-            if(wp_verify_nonce($_REQUEST['_wpnonce'])) // Verify the nonce
-            {
-              if($_POST['update_submitted'])
-              {
-                $sanatized_emails = array();
 
-                foreach(explode("\n", $_POST['product_subscription_emails']) as $product_subscription_email) // Loop and sanatize all email addresses in array
-                {
-                  $sanatized_emails[] = sanitize_email($product_subscription_email);
-                }
-                update_option('stnwp_subscribers', $sanatized_emails);
-              }
-            }
-          }
+			function stnwp_create_admin_widget() // Create admin widget
+			{
+				if(current_user_can('administrator'))
+				{
+					wp_add_dashboard_widget(
+						'subscribe_to_new_woocommerce_products',
+						'New Product Subscribers',
+						'stnwp_create_admin_widget_html'
+					);
+				}
+			}
+			add_action('wp_dashboard_setup', 'stnwp_create_admin_widget');
 
-          $email_subscribers = get_option('stnwp_subscribers');
+			function stnwp_create_admin_widget_html() // Admin widget HTML
+			{
+				if(current_user_can('administrator'))
+				{
+					if(isset($_REQUEST['_wpnonce']))
+					{
+						if(wp_verify_nonce($_REQUEST['_wpnonce'])) // Verify the nonce
+						{
+							if($_POST['update_submitted'])
+							{
+								$sanatized_emails = array();
 
-          $email_list_count        = 0;
-          $email_subscribers_total = count($email_subscribers);
-          $textbox_value           = '';
+								foreach(explode("\n", $_POST['product_subscription_emails']) as $product_subscription_email) // Loop and sanatize all email addresses in array
+								{
+									$sanatized_emails[] = sanitize_email($product_subscription_email);
+								}
+								update_option('stnwp_subscribers', $sanatized_emails);
+							}
+						}
+					}
 
-          if($email_subscribers)
-          {
-            foreach($email_subscribers as $email_subscriber)
-            {
-              $email_list_count++;
+					$email_subscribers = get_option('stnwp_subscribers');
 
-              $textbox_value .= $email_subscriber . (($email_list_count != $email_subscribers_total) ? "\n" : ''); // Stops blank array values on save
-            }
-          }
+					$email_list_count        = 0;
+					$email_subscribers_total = count($email_subscribers);
+					$textbox_value           = '';
 
-          echo '<form method="post" action="#">';
-          wp_nonce_field(); // Create nonce
-          echo '  <p>Add each email on a new line</p>';
-          echo '  <textarea style="width:100%; resize:none; height:100px;" name="product_subscription_emails">' . esc_textarea($textbox_value) . '</textarea>';
-          echo '  <input type="submit" name="save" class="button button-primary" value="Update List" style="margin:10px 0 0 0;">';
-          echo '  <input type="hidden" name="update_submitted" value="true">';
-          echo '</form>';
-        }
-      }
+					if($email_subscribers)
+					{
+						foreach($email_subscribers as $email_subscriber)
+						{
+							$email_list_count++;
+
+							$textbox_value .= $email_subscriber . (($email_list_count != $email_subscribers_total) ? "\n" : ''); // Stops blank array values on save
+						}
+					}
+
+					echo '<form method="post" action="#">';
+					wp_nonce_field(); // Create nonce
+					echo '  <p>Add each email on a new line</p>';
+					echo '  <textarea style="width:100%; resize:none; height:100px;" name="product_subscription_emails">' . esc_textarea($textbox_value) . '</textarea>';
+					echo '  <input type="submit" name="save" class="button button-primary" value="Update List" style="margin:10px 0 0 0;">';
+					echo '  <input type="hidden" name="update_submitted" value="true">';
+					echo '</form>';
+				}
+			}
 
 			function stnwp_new_product_created($new_status, $old_status, $post)
 			{
